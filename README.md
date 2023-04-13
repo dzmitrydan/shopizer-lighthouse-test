@@ -1,0 +1,1 @@
+# shopizer-lighthouse-test

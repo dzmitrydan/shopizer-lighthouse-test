@@ -72,12 +72,6 @@ async function captureReport() {
 		},
 	});
 
-  	//================================NAVIGATE================================
-    await flow.navigate(baseURL, {
-		stepName: 'Open Home page'
-		});
-  	console.log('Home page is opened');
-	
 	//================================SELECTORS================================
 	const tablesTab = ".main-menu > nav:nth-child(1) > ul:nth-child(1) > li:nth-child(2) > a:nth-child(1)";
     const tableProductCart = ".product-wrap > div:nth-child(1) > a:nth-child(1) > img:nth-child(1)";
@@ -87,43 +81,53 @@ async function captureReport() {
 	const checkoutButton = "a.default-btn:nth-child(2)";
     const orderDetails = ".your-order-wrap";
 
-	//================================PAGE_ACTIONS================================
-	await page.waitForSelector(tablesTab);
-	await flow.startTimespan({ stepName: 'Open Tables page' });
-		await page.click(tablesTab);
-        await waitTillHTMLRendered(page);
-		await page.waitForSelector(tableProductCart);
-    await flow.endTimespan();
-    console.log('Tables page is opened');
+    //================================RUN_TEST_FOR_5_LOOPS=========================
+    for (let i = 0; i < 5; i++) {
 
-	await flow.startTimespan({ stepName: 'Open Table cart' });
-		await page.click(tableProductCart);
-		await waitTillHTMLRendered(page);
-		await page.waitForSelector(addToCartButton);
-	await flow.endTimespan();
-	console.log('Table cart is opened');
+    //================================NAVIGATE================================
+            await flow.navigate(baseURL, {
+        		stepName: 'Open Home page'
+        		});
+          	console.log('Home page is opened');
 
-	await flow.startTimespan({ stepName: 'Add Table to cart' });
-    	await page.click(addToCartButton);
-    	await waitTillHTMLRendered(page);
-    	await page.waitForSelector(successBanner);
-    await flow.endTimespan();
-    console.log('Table is added to cart');
+    //================================PAGE_ACTIONS================================
+            await page.waitForSelector(tablesTab);
+            await flow.startTimespan({ stepName: 'Open Tables page' });
+            	await page.click(tablesTab);
+                await waitTillHTMLRendered(page);
+            	await page.waitForSelector(tableProductCart);
+            await flow.endTimespan();
+            console.log('Tables page is opened');
 
-   await flow.startTimespan({ stepName: 'Open Cart' });
-        await page.click(cartButton);
-        await waitTillHTMLRendered(page);
-        await page.waitForSelector(checkoutButton);
-        await flow.endTimespan();
-    console.log('Cart with order is opened');
+            await flow.startTimespan({ stepName: 'Open Table cart' });
+            	await page.click(tableProductCart);
+            	await waitTillHTMLRendered(page);
+            	await page.waitForSelector(addToCartButton);
+            await flow.endTimespan();
+            console.log('Table cart is opened');
 
-    await flow.startTimespan({ stepName: 'Proceed to checkout' });
-        await page.click(checkoutButton);
-        await waitTillHTMLRendered(page);
-        await page.waitForSelector(orderDetails);
-        await navigationPromise;
-        await flow.endTimespan();
-    console.log('Order is opened with details');
+            await flow.startTimespan({ stepName: 'Add Table to cart' });
+                await page.click(addToCartButton);
+                await waitTillHTMLRendered(page);
+                await page.waitForSelector(successBanner);
+            await flow.endTimespan();
+            console.log('Table is added to cart');
+
+            await flow.startTimespan({ stepName: 'Open Cart' });
+                await page.click(cartButton);
+                await waitTillHTMLRendered(page);
+                await page.waitForSelector(checkoutButton);
+            await flow.endTimespan();
+            console.log('Cart with order is opened');
+
+            await flow.startTimespan({ stepName: 'Proceed to checkout' });
+                await page.click(checkoutButton);
+                await waitTillHTMLRendered(page);
+                await page.waitForSelector(orderDetails);
+                await navigationPromise;
+            await flow.endTimespan();
+            console.log('Order is opened with details');
+    }
 
 	//================================REPORTING================================
 	const reportPath = __dirname + '/user-flow.report.html';
